@@ -7,6 +7,8 @@ This document maps the design to the code. The guiding rule (design §32):
 > (`universal_computer.core.engine.ComputerControlEngine`) is a plain async
 > Python library usable without any server.
 
+![Architecture Overview](../images/architecture.png)
+
 ## Module map
 
 ```

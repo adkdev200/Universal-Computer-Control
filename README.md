@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="images/logo.png" alt="Universal Computer Control MCP Logo" width="400">
+</p>
+
 # Universal Computer Control MCP
 
 > **Give your AI agent eyes and hands on any computer.**
@@ -19,6 +23,10 @@ Playwright MCP or any other external MCP server**. Browsers, IDEs, office
 suites, terminals, file managers, Electron apps and canvas-heavy applications
 are all just GUI applications. Multiple backends live *inside* the server and
 the best available mechanism is chosen automatically per action.
+
+<p align="center">
+  <img src="images/architecture.png" alt="Universal Computer Control Architecture" width="800">
+</p>
 
 ```
                 AI Agent / LLM
@@ -48,9 +56,18 @@ the best available mechanism is chosen automatically per action.
 - **Interaction hierarchy** per action: Windows UIA → Linux AT-SPI → semantic
   element → OCR text → image template → vision-language model → coordinates
   → PyAutoGUI. Every fallback is automatic.
+
+<p align="center">
+  <img src="images/fallback_pipeline.png" alt="Fallback Pipeline" width="800">
+</p>
+
 - **`computer.observe` is the core tool**: one structured snapshot with
   screen geometry, active window, cursor, OCR'd text and normalized UI
   elements (stable `element_N` ids within a cycle).
+
+<p align="center">
+  <img src="images/control_loop.png" alt="Control Loop" width="800">
+</p>
 - **Smart targets**: `computer.click("Continue")`, `computer.click("element_17")`,
   `computer.click({"x": 500, "y": 300})` — text matching is fuzzy
   (`"Continue"` matches `"continue"` and `"Continue →"`).
