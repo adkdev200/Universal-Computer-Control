@@ -78,6 +78,7 @@ class TestEnvOverrides:
 
 class TestConfigPathResolution:
     def test_ucc_config_env(self, tmp_path, monkeypatch):
+        monkeypatch.delenv("UCC_LOGGING__LEVEL", raising=False)
         config_file = tmp_path / "custom.yaml"
         config_file.write_text("logging:\n  level: DEBUG\n", encoding="utf-8")
         monkeypatch.setenv("UCC_CONFIG", str(config_file))
@@ -85,6 +86,7 @@ class TestConfigPathResolution:
         assert cfg.logging.level == "DEBUG"
 
     def test_local_config_yaml_autodetected(self, tmp_path, monkeypatch):
+        monkeypatch.delenv("UCC_LOGGING__LEVEL", raising=False)
         monkeypatch.chdir(tmp_path)
         (tmp_path / "config.yaml").write_text("logging:\n  level: WARNING\n", encoding="utf-8")
         cfg = load_config()
