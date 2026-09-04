@@ -114,3 +114,18 @@ class TestBackendProbe:
         assert backend.is_available()
         assert backend.is_available()
         assert calls["n"] == 1
+
+
+class TestEngineAutoRegistration:
+    def test_engine_init_without_backend_manager_registers_backends(self):
+        from universal_computer import ComputerControlEngine
+
+        engine = ComputerControlEngine()
+        assert len(engine.backend_manager.backends()) > 0
+
+    def test_build_default_engine_without_args(self):
+        from universal_computer import build_default_engine
+
+        engine = build_default_engine()
+        assert len(engine.backend_manager.backends()) > 0
+

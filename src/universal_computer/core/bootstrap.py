@@ -9,7 +9,7 @@ from __future__ import annotations
 
 import sys
 
-from universal_computer.config import AppConfig
+from universal_computer.config import AppConfig, load_config
 from universal_computer.core.backend_manager import BackendManager
 from universal_computer.core.engine import ComputerControlEngine
 from universal_computer.logging import get_logger
@@ -63,9 +63,10 @@ def _try_register(manager: BackendManager, module_name: str, class_name: str, *a
         return False
 
 
-def build_default_engine(config: AppConfig) -> ComputerControlEngine:
+def build_default_engine(config: AppConfig | None = None) -> ComputerControlEngine:
     """Create a :class:`ComputerControlEngine` with all default components."""
-    engine = ComputerControlEngine(config, backend_manager=build_backend_manager(config))
+    cfg = config if config is not None else load_config()
+    engine = ComputerControlEngine(cfg)
     available = [name for name, info in engine.backend_manager.status_report().items() if info["available"]]
     logger.info("Engine ready; available backends: %s", available or "none (degraded mode)")
     return engine

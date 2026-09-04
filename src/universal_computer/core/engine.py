@@ -19,7 +19,7 @@ import time
 from typing import Any
 
 from universal_computer.backends.base import Cap, WindowManagementBackend
-from universal_computer.config import AppConfig
+from universal_computer.config import AppConfig, load_config
 from universal_computer.core.actions import MouseKeyboardActions
 from universal_computer.core.backend_manager import BackendManager
 from universal_computer.core.errors import (
@@ -53,7 +53,7 @@ class ComputerControlEngine(MouseKeyboardActions):
 
     def __init__(
         self,
-        config: AppConfig,
+        config: AppConfig | None = None,
         backend_manager: BackendManager | None = None,
         vision: VisionServices | None = None,
         persistence: PersistenceManager | None = None,
@@ -65,15 +65,20 @@ class ComputerControlEngine(MouseKeyboardActions):
         verifier: Verifier | None = None,
         executor: ActionExecutor | None = None,
     ) -> None:
-        self.config = config
-        self.persistence = persistence or PersistenceManager(config.persistence)
-        self.backend_manager = backend_manager or BackendManager(config.backends)
-        self.vision = vision or VisionServices.from_config(config.vision, config.ocr)
+        self.config = config if config is not None else load_config()
+        self.persistence = persistence or PersistenceManager(self.config.persistence)
+        if backend_manager is None:
+            from universal_computer.core.bootstrap import build_backend_manager
+
+            self.backend_manager = build_backend_manager(self.config)
+        else:
+            self.backend_manager = backend_manager
+        self.vision = vision or VisionServices.from_config(self.config.vision, self.config.ocr)
         self.stop = stop or EmergencyStop(self.persistence.state_dir)
-        self.policy = policy or SecurityPolicy(config.security)
+        self.policy = policy or SecurityPolicy(self.config.security)
         self.history = history or ActionHistory(self.persistence)
         self.observer = observer or Observer(
-            self.backend_manager, config.engine, self.persistence, self.vision
+            self.backend_manager, self.config.engine, self.persistence, self.vision
         )
         self.registry: ElementRegistry = self.observer.registry
         self.resolver = resolver or TargetResolver(
@@ -81,11 +86,11 @@ class ComputerControlEngine(MouseKeyboardActions):
             self.observer,
             self.registry,
             self.vision,
-            config.engine,
+            self.config.engine,
         )
-        self.verifier = verifier or Verifier(config.engine)
+        self.verifier = verifier or Verifier(self.config.engine)
         self.executor = executor or ActionExecutor(
-            config.engine,
+            self.config.engine,
             self.observer,
             self.verifier,
             self.backend_manager,
