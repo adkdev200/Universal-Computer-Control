@@ -1,0 +1,40 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    name: Test (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install Linux system packages
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y wmctrl xdotool xclip scrot tesseract-ocr at-spi2-core
+
+      - name: Install package
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e ".[input,ocr,vision,screenshot,vlm,dev]"
+
+      - name: Ruff lint
+        run: ruff check src tests
+
+      - name: Run tests
+        run: pytest tests
+        env:
+          UCC_LOGGING__LEVEL: WARNING

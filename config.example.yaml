@@ -1,0 +1,75 @@
+# Universal Computer MCP - example configuration
+# Copy to config.yaml next to where you launch the server, or point
+# `universal-computer-control --config /path/to/config.yaml` at it.
+# Every value can be overridden with UCC_SECTION__KEY environment variables.
+
+server:
+  name: "Universal Computer Control MCP"
+  transport: stdio            # stdio is the only transport exposed today
+
+engine:
+  observation_level: normal   # minimal | normal | full
+  observation_cache_ms: 1500  # reuse a fresh observation instead of re-shooting
+  duplicate_window_ms: 2000   # suppress identical actions repeated within this window
+  verify_actions: true        # take before/after observations for important actions
+  verification_mode: basic    # off | basic | strict (strict retries when nothing changed)
+  action_timeout_s: 10.0      # hard timeout per attempt
+  retry_attempts: 2           # extra attempts beyond the primary one
+  wait_poll_interval_s: 0.5
+  type_interval_s: 0.02       # delay between keystrokes
+  clipboard_restore: true     # restore previous clipboard after clipboard-typing
+
+input:
+  pause_s: 0.05               # PyAutoGUI global pause between actions
+  failsafe: true              # PyAutoGUI corner fail-safe
+  move_duration_s: 0.12
+  drag_duration_s: 0.35
+
+ocr:
+  enabled: true
+  provider: tesseract         # tesseract | easyocr
+  language: eng
+  min_confidence: 0.5         # drop OCR words below this confidence (0-1)
+  # tesseract_cmd: C:\\Program Files\\Tesseract-OCR\\tesseract.exe   # Windows example
+
+vision:
+  enabled: true
+  # template_dir: /home/you/.universal-computer/templates
+  match_threshold: 0.8
+  vlm:
+    enabled: false
+    provider: openai-compatible
+    base_url: https://api.openai.com/v1
+    model: gpt-4o-mini
+    api_key_env: VLM_API_KEY  # the key itself lives in the environment variable
+    timeout_s: 30
+
+security:
+  mode: standard              # permissive | standard | strict
+  allow_shell: false          # true allows full shell strings for computer.run_command
+  allowed_commands: []        # e.g. ["ls", "xdotool", "wmctrl", "git status"]
+  allowed_applications: []    # empty means "launching is allowed" in standard mode
+  max_actions_per_minute: 120
+  command_timeout_s: 30
+  confirmation_required:      # these tools additionally need confirm=true
+    - close_window
+    - run_command
+  max_command_output_chars: 4000
+
+persistence:
+  home: null                  # default: ~/.universal-computer (override: UCC_HOME)
+  save_screenshots: true
+  save_observations: true
+  retention_days: 14
+  max_screenshots: 500
+  max_observations: 500
+
+logging:
+  level: INFO
+  # dir: /var/log/ucm         # default: <home>/logs
+  file: server.log
+  action_log: actions.jsonl
+  console: true
+
+backends:
+  priorities: {}              # e.g. { pyautogui: 5 } to re-order backends

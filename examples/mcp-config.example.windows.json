@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "universal-computer": {
+      "command": "C:\\Users\\you\\universal-computer-control\\.venv\\Scripts\\python.exe",
+      "args": ["-m", "universal_computer"],
+      "env": {
+        "UCC_SECURITY__MODE": "standard",
+        "UCC_SECURITY__ALLOWED_COMMANDS": "[\"dir\", \"tasklist\"]",
+        "UCC_ENGINE__VERIFICATION_MODE": "basic"
+      }
+    }
+  }
+}

@@ -1,0 +1,104 @@
+[build-system]
+requires = ["hatchling>=1.24"]
+build-backend = "hatchling.build"
+
+[project]
+name = "universal-computer-control"
+version = "0.1.0"
+description = "Universal cross-platform computer control MCP server: observe, understand, act, verify on Windows and Linux GUIs without any browser/application-specific MCP."
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+authors = [{ name = "Dev Adhikari", email = "adkdev200@gmail.com" }]
+keywords = ["mcp", "mcp-server", "model-context-protocol", "computer-use", "computer-control", "gui-automation", "ai-agents", "automation", "pyautogui", "accessibility", "uiautomation", "at-spi", "ocr", "windows", "linux"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Desktop Environment",
+]
+
+# Core: the MCP server must start and expose its full API with only these.
+dependencies = [
+    "mcp>=1.2.0",
+    "pydantic>=2.6",
+    "pydantic-settings>=2.2",
+    "PyYAML>=6.0",
+    "Pillow>=10.0",
+]
+
+[project.optional-dependencies]
+# Physical input (mouse/keyboard) - the universal fallback layer.
+input = ["PyAutoGUI>=0.9.54"]
+# Windows-specific backends.
+windows = [
+    "pywinauto>=0.6.8; sys_platform == 'win32'",
+    "pygetwindow>=0.0.9; sys_platform == 'win32'",
+    "psutil>=5.9",
+]
+# Linux-specific backends.
+linux = ["psutil>=5.9"]
+# Fast multi-monitor screenshots (optional, preferred when installed).
+screenshot = ["mss>=9.0"]
+# OCR providers.
+ocr = ["pytesseract>=0.3.10"]
+ocr-easy = ["easyocr>=1.7"]
+# Visual template matching.
+vision = ["opencv-python>=4.8", "numpy>=1.24"]
+# Optional vision-language model provider.
+vlm = ["httpx>=0.27"]
+# Everything end users typically want on a desktop machine.
+desktop = [
+    "universal-computer-control[input,ocr,vision]",
+    "mss>=9.0",
+    "psutil>=5.9",
+    "httpx>=0.27",
+]
+# Development.
+dev = [
+    "pytest>=8.0",
+    "pytest-asyncio>=0.23",
+    "ruff>=0.4",
+    "mypy>=1.8",
+    "types-PyYAML",
+]
+
+[project.urls]
+Homepage = "https://github.com/adkdev200/universal-computer-control"
+Issues = "https://github.com/adkdev200/universal-computer-control/issues"
+Documentation = "https://github.com/adkdev200/universal-computer-control#readme"
+
+[project.scripts]
+universal-computer-control = "universal_computer.server:main"
+ucc = "universal_computer.server:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/universal_computer"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+addopts = "-q"
+filterwarnings = ["ignore::DeprecationWarning"]
+markers = [
+    "timeout: mark test timeout",
+]
+
+[tool.ruff]
+line-length = 110
+target-version = "py311"
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "W"]
+ignore = ["E501", "UP042", "B024"]
+
+[tool.mypy]
+python_version = "3.12"
+ignore_missing_imports = true
+check_untyped_defs = true
+disable_error_code = ["attr-defined", "assignment", "arg-type", "dict-item", "misc", "union-attr", "list-item", "return-value"]
+files = ["src/universal_computer"]

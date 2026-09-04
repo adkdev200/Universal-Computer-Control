@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "universal-computer": {
+      "command": "python",
+      "args": ["-m", "universal_computer"],
+      "env": {
+        "UCC_SECURITY__MODE": "standard",
+        "UCC_SECURITY__ALLOWED_COMMANDS": "[\"ls\", \"xdotool\", \"wmctrl\", \"git status\"]",
+        "UCC_ENGINE__VERIFICATION_MODE": "basic"
+      }
+    }
+  }
+}
