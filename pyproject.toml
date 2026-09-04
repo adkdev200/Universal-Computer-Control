@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "universal-computer-control"
-version = "0.1.0"
+version = "0.1.1"
 description = "Universal cross-platform computer control MCP server: observe, understand, act, verify on Windows and Linux GUIs without any browser/application-specific MCP."
 readme = "README.md"
 requires-python = ">=3.11"

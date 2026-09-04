@@ -7,7 +7,7 @@ Protocol (``python -m universal_computer``).
 
 from __future__ import annotations
 
-__version__ = "0.1.0"
+__version__ = "0.1.1"
 
 from universal_computer.config import AppConfig, load_config
 from universal_computer.core.bootstrap import build_default_engine
