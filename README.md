@@ -308,3 +308,16 @@ Unit tests run on any machine (OS-specific pieces are mocked). The
 integration test boots the real server over stdio. See
 `docs/ARCHITECTURE.md` for the module map and `docs/TROUBLESHOOTING.md` for
 platform-specific fixes.
+
+## Contributors & Acknowledgments
+
+- **[Z.ai](https://z.ai)** (GLM) — co-developer: MCP server, cross-platform
+  backends, vision pipeline, python-Xlib window fallback and `ucc-doctor`
+  diagnostics
+- **Claude Code** (Anthropic) — co-developer: code generation, testing and
+  plug-and-play hardening
+- **[@adkdev200](https://github.com/adkdev200)** — creator & maintainer
+
+This project is built collaboratively with AI pair-programming: the majority
+of the codebase was written and reviewed by Z.ai's GLM and Anthropic's Claude
+Code under the direction of the maintainer.

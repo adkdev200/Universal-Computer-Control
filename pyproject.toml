@@ -9,7 +9,11 @@ description = "Universal cross-platform computer control MCP server: observe, un
 readme = "README.md"
 requires-python = ">=3.11"
 license = { text = "MIT" }
-authors = [{ name = "Dev Adhikari", email = "adkdev200@gmail.com" }]
+authors = [
+    { name = "Z.ai" },
+    { name = "Claude Code (Anthropic)" },
+]
+maintainers = [{ name = "Dev Adhikari", email = "adkdev200@gmail.com" }]
 keywords = ["mcp", "mcp-server", "model-context-protocol", "computer-use", "computer-control", "gui-automation", "ai-agents", "automation", "pyautogui", "accessibility", "uiautomation", "at-spi", "ocr", "windows", "linux"]
 classifiers = [
     "Development Status :: 4 - Beta",
