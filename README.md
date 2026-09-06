@@ -126,8 +126,18 @@ elevated, non-elevated windows may refuse automation (UIA integrity levels).
 
 ```bash
 git clone https://github.com/adkdev200/universal-computer-control.git && cd universal-computer-control
-bash scripts/install_linux.sh
+bash scripts/install_linux.sh --yes     # add --no-sudo to skip system packages
+./.venv/bin/ucc-doctor                  # verify every backend, exact fix hints
 ```
+
+The installer is fully non-interactive with `--yes`: it installs system
+packages (wmctrl/xdotool/xclip/scrot/tesseract/at-spi2-core), all Python
+extras, and a ready `~/.universal-computer/config/config.yaml` with OCR,
+template matching and the VLM provider enabled. `ucc-doctor` then probes every
+backend live and prints copy-paste fix commands for anything missing. Note:
+even on machines with **no** wmctrl/xdotool/xclip installed, the Linux window
+backend now works through a built-in python-Xlib (EWMH/ICCCM) fallback - the
+system tools only make it more robust.
 
 Manual steps:
 
@@ -279,8 +289,19 @@ survives restarts and can be triggered externally.
 
 ```bash
 pip install -e ".[dev]"
-pytest tests            # 158 unit + integration tests, no display needed
+pytest tests            # 160 unit + integration tests, no display needed
 ruff check src tests
+```
+
+`scripts/e2e_live_test.py` is an end-to-end harness that boots its own
+Xvfb + openbox session, creates real X11 windows, and exercises every
+backend live (screenshots, OCR, window ops via both the tool paths and the
+python-Xlib fallback, OpenCV template matching, the VLM pipeline against a
+mock OpenAI-compatible endpoint, clipboard, input, launch, emergency stop):
+
+```bash
+python scripts/e2e_live_test.py             # full stack
+python scripts/e2e_live_test.py --no-tools  # zero X11 tools: Xlib fallback
 ```
 
 Unit tests run on any machine (OS-specific pieces are mocked). The

@@ -1,12 +1,14 @@
 {
   "mcpServers": {
     "universal-computer": {
-      "command": "python",
+      "command": "/absolute/path/to/universal-computer-control/.venv/bin/python",
       "args": ["-m", "universal_computer"],
       "env": {
         "UCC_SECURITY__MODE": "standard",
         "UCC_SECURITY__ALLOWED_COMMANDS": "[\"ls\", \"xdotool\", \"wmctrl\", \"git status\"]",
-        "UCC_ENGINE__VERIFICATION_MODE": "basic"
+        "UCC_ENGINE__VERIFICATION_MODE": "basic",
+        "UCC_VISION__VLM__ENABLED": "true",
+        "VLM_API_KEY": "set-your-key-here-or-remove-if-unused"
       }
     }
   }

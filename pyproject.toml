@@ -74,6 +74,7 @@ Documentation = "https://github.com/adkdev200/universal-computer-control#readme"
 [project.scripts]
 universal-computer-control = "universal_computer.server:main"
 ucc = "universal_computer.server:main"
+ucc-doctor = "universal_computer.doctor:main"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/universal_computer"]

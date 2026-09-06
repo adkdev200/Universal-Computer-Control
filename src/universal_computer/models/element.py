@@ -146,8 +146,10 @@ class BoundingBox(BaseModel):
 
     model_config = ConfigDict(validate_assignment=True)
 
-    x: int = Field(default=0, ge=0)
-    y: int = Field(default=0, ge=0)
+    # x/y may be negative: virtual-desktop coordinates span all monitors
+    # (a monitor left of/above the primary has negative offsets).
+    x: int = Field(default=0)
+    y: int = Field(default=0)
     width: int = Field(default=0, ge=0)
     height: int = Field(default=0, ge=0)
 

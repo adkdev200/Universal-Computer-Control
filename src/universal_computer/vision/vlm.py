@@ -27,9 +27,10 @@ logger = get_logger("vision.vlm")
 _PROMPT = (
     "You are a precise UI-element locator. Find the UI element in this screenshot "
     "that best matches the description. Respond with ONLY a JSON object, no "
-    "markdown, of the form: {\"found\": true|false, \"bbox_2d\": [x1, y1, x2, y2], "
-    "\"confidence\": 0.0-1.0} where bbox_2d is in screenshot pixel coordinates "
-    "with origin at the top-left corner.\nDescription: {description}"
+    "markdown, of the form: {{\"found\": true|false, \"bbox_2d\": [x1, y1, x2, y2], "
+    "\"confidence\": 0.0-1.0}} where bbox_2d is in screenshot pixel coordinates "
+    "with origin at the top-left corner."
+    "\nDescription: {description}"
 )
 
 _JSON_RE = re.compile(r"\{.*\}", re.DOTALL)
