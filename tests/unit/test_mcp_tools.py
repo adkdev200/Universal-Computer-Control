@@ -39,8 +39,8 @@ class TestToolSurface:
     async def test_schemas_are_objects(self, app):
         tools = await app.list_tools()
         click = next(t for t in tools if t.name == "computer.click")
-        assert click.input_schema["type"] == "object"
-        assert "target" in click.input_schema["properties"]
+        assert click.inputSchema["type"] == "object"
+        assert "target" in click.inputSchema["properties"]
 
 
 class TestToolCalls:
